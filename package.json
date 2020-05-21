@@ -27,10 +27,13 @@
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
+    
+    "root":true,
+    "env":{
+      "node":true,
+      "browser":true
     },
+
     "extends": [
       "plugin:vue/essential",
       "eslint:recommended"
@@ -38,7 +41,12 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {}
+    "rules":{
+      "no-undef":"off",
+      "no-unused-vars":"off",
+      "no-debugger":"off"
+    }
+  
   },
   "browserslist": [
     "> 1%",
