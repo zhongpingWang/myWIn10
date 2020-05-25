@@ -2,6 +2,8 @@ import Vue from "vue"
 
 import Main from "./Index.vue"
 
+import store from '@/store/index.js'
+
 let DialogConstructor = Vue.extend(Main);
 
 
@@ -22,7 +24,7 @@ function bindESC() {
 
             let delInstance = instances[index];
 
-            if (delInstance) {
+            if (delInstance) { 
 
                 delInstance.close(delInstance.Settings.isCloseAnimate);
 
@@ -101,25 +103,26 @@ export default function (props) {
     isBandESC = true;
 
 
-    $(instance.dom).on("mousedown",function(event){ 
+    // $(instance.dom).on("mousedown",function(event){ 
 
-        for(var i=0;i<instances.length;i++){
+    //     for(var i=0;i<instances.length;i++){
 
-            if(instances[i]._uid == instance._uid){
-                $(instances[i].dom).find(".myDialog").css("z-index",3);
-            }else{
-                $(instances[i].dom).find(".myDialog").css("z-index",2);
-            }
+    //         if(instances[i]._uid == instance._uid){
+    //             $(instances[i].dom).find(".myDialog").css("z-index",3);
+    //         }else{
+    //             $(instances[i].dom).find(".myDialog").css("z-index",2);
+    //         }
 
-        } 
-    });
+    //     } 
+    // });
 
     return instance;
 
 }
 
 //删除数组中的数据
-function removeInstance(instance) {
+function removeInstance(instance) { 
+   
 
     let index = "notfind";
 
@@ -137,6 +140,11 @@ function removeInstance(instance) {
     if (index == "notfind") {
         return;
     }
+
+    store.dispatch({
+        type:"closeDialog",
+        payload:instance
+    });
 
     instances.splice(index, 1);
 

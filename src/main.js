@@ -7,6 +7,14 @@ import Util from "@/util/js/util.js";
 import util from './util/js/util';
 import registerGlobalComponentsfunction from "@/init/registerGlobalComponents.js"
 
+import fromCore from "./libs/formDesign/form_core.js"
+import formView from "./libs/formDesign/form_view.js"
+import formApp from "./libs/formDesign/app.js"
+
+import "./libs/formDesign/css/form_core.css"
+import "./libs/formDesign/css/form_view.css"
+import "./libs/formDesign/css/app.css"
+
 
 Vue.config.productionTip = false; 
 

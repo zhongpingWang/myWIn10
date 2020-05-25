@@ -1,16 +1,16 @@
 <template>
-<div class="dialogSite" :class="[Settings.cssClass]">
+<div class="dialogSite" :class="[Settings.cssClass]" @mousedown="_activeWindow">
 
     <div class="myDialogMask" v-if="Settings.showMask" :style="Settings.MarkStyle"></div>
 
     <div class="myDialogWapper-nouser" :style="Settings.Warpstyle">
 
-        <div class="myDialog" :class="[Settings.cssClass]" :style="Settings.style">
+        <div class="myDialog" :class="[Settings.cssClass,{min:isMin,max:isMax}]" :style="dialogStyle">
 
             <div class="dialogHeader" v-if="Settings.showHeader" @mousedown="_bindMove($event)">
                 <div class="rightOp">
-                    <i class="account-iconfont account-iconfont-min ThemeDarkColorHover btnMin" @click="_close"></i>
-                    <i class="account-iconfont account-iconfont-max ThemeDarkColorHover btnMax" @click="_close"></i>
+                    <i class="account-iconfont account-iconfont-min ThemeDarkColorHover btnMin" @click="_minDialog"></i>
+                    <i class="account-iconfont account-iconfont-max ThemeDarkColorHover btnMax" @click="_maxDialog"></i>
                     <i class="account-iconfont account-iconfont-close ThemeDarkColorHover btnClose" @click="_close"></i>
                 </div>
 
@@ -42,16 +42,112 @@ export default {
 
     props: ["Settings"],
 
+    computed: {
+
+        isMax() {
+
+            let uid = this._uid;
+            let isMax = false;
+
+            for (var i = 0; i < store.state.WinDialogs.length; i++) {
+
+                let item = store.state.WinDialogs[i];
+                if (uid == item.id) {
+                    if (item.isMin != undefined) {
+                        isMax = item.isMax;
+                        break;
+                    }
+                }
+            }
+            return isMax;
+        },
+
+        isMin() {
+
+            let uid = this._uid;
+            let isMin = false;
+
+            for (var i = 0; i < store.state.WinDialogs.length; i++) {
+
+                let item = store.state.WinDialogs[i];
+                if (uid == item.id) {
+                    if (item.isMin != undefined) {
+                        isMin = item.isMin;
+                        break;
+                    }
+                }
+            }
+
+            return isMin;
+        },
+
+        dialogStyle: function () {
+
+            var styleObj = this.Settings.style;
+
+            var uid = this._uid;
+
+            for (var i = 0; i < store.state.WinDialogs.length; i++) {
+
+                let item = store.state.WinDialogs[i];
+                if (uid == item.id) {
+                    if (item.selected) {
+                        styleObj.zIndex = 3;
+                    } else {
+                        styleObj.zIndex = 2;
+                    }
+                }
+
+            }
+
+            return styleObj;
+
+        }
+    },
+
     methods: {
+
+        //最大化
+        _maxDialog() {
+            
+            store.dispatch({
+                type: "maxDialog",
+                payload: {
+                    id: this._uid
+                }
+            });
+        },
+
+        //最小化
+        _minDialog() {
+            store.dispatch({
+                type: "minDialog",
+                payload: {
+                    id: this._uid
+                }
+            });
+        },
+
+        //激活当前窗口
+        _activeWindow() {
+
+            store.dispatch({
+                type: "activeWindow",
+                payload: {
+                    id: this._uid
+                }
+            });
+
+        },
 
         //绑定移动
         _bindMove(event) {
             this.drag(event.target.parentNode, event);
         },
-        
+
         //改变窗口大小
-        _changeWindowSize(event){
-            this.dragWindowSize(event,this.$el.querySelector(".myDialog"));
+        _changeWindowSize(event) {
+            this.dragWindowSize(event, this.$el.querySelector(".myDialog"));
         },
 
         //关闭
@@ -187,11 +283,32 @@ export default {
     border-radius: 2px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     box-sizing: border-box;
-    width: 500px;
+    width: 800px;
     left: 50%;
     top: 50px;
     z-index: 2;
+    height: 400px;
     overflow: hidden;
+
+    &.min {
+        width: 0 !important;
+        height: 0 !important;
+        bottom: 0px !important;
+        top: auto !important;
+        left: 0px !important;
+        right: auto !important;
+        transition: all .5s;
+    }
+
+    &.max {
+        width: auto !important;
+        height: auto !important;
+        bottom: 45px !important;
+        top: 0px !important;
+        left: 0px !important;
+        right: 0px !important;
+        transition: all .5s;
+    }
 
     .dialogHeader {
         font-size: 12px;

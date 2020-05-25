@@ -24,18 +24,22 @@ export default {
         return {
             //type:0：空的  1 快捷方式 2：实体
             applist: [{
+                key:"recycle",
                 type:1,
                 iconName:"account-iconfont-huishouzhan",
                 text:"回收站"
             },{
+                key:"icomputer",
                 type:1,
                 iconName:"account-iconfont-diannao",
                 text:"我的电脑"
             },{
+                key:"fromDesign",
                 type:1,
                 iconName:"account-iconfont-biaodansheji",
                 text:"表单设计"
             },{
+                key:"appShop",
                 type:1,
                 iconName:"account-iconfont-shopapps",
                 text:"应用市场"

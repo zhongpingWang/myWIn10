@@ -12,6 +12,9 @@ export default new Vuex.Store({
   },
 
   state: {
+
+    WinDialogs:[],
+
     apps: [
     ]
   },
